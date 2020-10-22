@@ -1,11 +1,22 @@
-int* printNumbers(int n, int* returnSize)
+char * defangIPaddr(char * address)
 {
-	*returnSize = pow(10, n) - 1;
-	int *re = (int*)malloc(sizeof(int) * (*returnSize));
-	for (int i = 1; i < (pow(10, n)); i++)
+    char* p = address;
+	char* buff = (char*)malloc(strlen(address) + 7);
+	char* q = buff;
+	while (*p != '\0')
 	{
-		re[i-1] = i;
+		if (*p == '.')
+		{
+			*q = '[';
+			*(q + 1) = '.';
+			*(q + 2) = ']';
+			q += 3;
+			p++;
+		}
+		else
+			*(q++) = *(p++);
 	}
-	return re;
-	free(re);;
+	*q = '\0';
+	return buff;
+	free(buff);
 }
