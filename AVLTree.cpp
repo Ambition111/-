@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stack>
 
+
+
 using namespace std;
 
 template<class Type>
@@ -23,7 +25,7 @@ private:
 	Type			data;
 	AVLNode<Type>*	leftChild;
 	AVLNode<Type>*	rightChild;
-	int				bf;  //Æ½ºâÒò×Ó
+	int				bf;  //å¹³è¡¡å› å­
 };
 
 template<class Type>
@@ -43,7 +45,7 @@ public:
 	}
 protected:
 	bool Insert(AVLNode<Type>*& t, const Type& x);
-	void Rotate_R(AVLNode<Type>*& ptr); //ptrÖ¸Ïò²»Æ½ºâµÄ½Úµã
+	void Rotate_R(AVLNode<Type>*& ptr); //ptræŒ‡å‘ä¸å¹³è¡¡çš„èŠ‚ç‚¹
 	void Rotate_L(AVLNode<Type>*& ptr);
 	void Rotate_LR(AVLNode<Type>*& ptr);
 	void Rotate_RL(AVLNode<Type>*& ptr);
@@ -51,21 +53,21 @@ private:
 	AVLNode<Type>* root;
 };
 
-//1.µ÷ÕûÆ½ºâ 2.¸ü¸Äbf
+//1.è°ƒæ•´å¹³è¡¡ 2.æ›´æ”¹bf
 template<class Type>
 void AVLTree<Type>::Rotate_R(AVLNode<Type>*& ptr)
 {
-	AVLNode<Type>* subR = ptr; //Ğı×ªÖ®ºóµÄÓÒ×ÓÊ÷
-	ptr = subR->leftChild;     //ptrÎª×îºóµÄĞÂ¸ù
-	subR->leftChild = ptr->rightChild; //Á¬½ÓĞı×ªºóµÄsubRÖ®Ç°ÏÈ½«ptrµÄÓÒÊ÷Á¬½Óµ½subRµÄ×óÊ÷ÉÏ
+	AVLNode<Type>* subR = ptr; //æ—‹è½¬ä¹‹åçš„å³å­æ ‘
+	ptr = subR->leftChild;     //pträ¸ºæœ€åçš„æ–°æ ¹
+	subR->leftChild = ptr->rightChild; //è¿æ¥æ—‹è½¬åçš„subRä¹‹å‰å…ˆå°†ptrçš„å³æ ‘è¿æ¥åˆ°subRçš„å·¦æ ‘ä¸Š
 	ptr->rightChild = subR;
 
-	ptr->bf = subR->bf = 0;		//¸ü¸Äbf
+	ptr->bf = subR->bf = 0;		//æ›´æ”¹bf
 }
 template<class Type>
 void AVLTree<Type>::Rotate_L(AVLNode<Type>*& ptr)
 {
-	AVLNode<Type>* subL = ptr; //Ğı×ªÖ®ºóµÄ×ó×ÓÊ÷
+	AVLNode<Type>* subL = ptr; //æ—‹è½¬ä¹‹åçš„å·¦å­æ ‘
 	ptr = subL->rightChild;
 	subL->rightChild = ptr->leftChild;
 	ptr->leftChild = subL;
@@ -79,21 +81,21 @@ void AVLTree<Type>::Rotate_LR(AVLNode<Type>*& ptr)
 	AVLNode<Type>* subR = ptr;
 	ptr = subL->rightChild;
 
-	//ÏÈ×óĞı×ª
+	//å…ˆå·¦æ—‹è½¬
 	subL->rightChild = ptr->leftChild;
 	ptr->leftChild = subL;
 
-	//¸üĞÂsubL->bf       //»­Í¼·ÖÇé¿öÍÆµ¼
+	//æ›´æ–°subL->bf       //ç”»å›¾åˆ†æƒ…å†µæ¨å¯¼
 	if (ptr->bf <= 0)
 		subL->bf = 0;
 	else
 		subL->bf = -1;
 
-	//ºóÓÒĞı×ª
+	//åå³æ—‹è½¬
 	subR->leftChild = ptr->rightChild;
 	ptr->rightChild = subR;
 
-	//¸üĞÂsubR->bf
+	//æ›´æ–°subR->bf
 	if (ptr->bf >= 0)
 		subR->bf = 0;
 	else
@@ -108,21 +110,21 @@ void AVLTree<Type>::Rotate_RL(AVLNode<Type>*& ptr)
 	AVLNode<Type>* subR = ptr->rightChild;;
 	ptr = subR->leftChild;
 
-	//ÏÈÓÒĞı×ª
+	//å…ˆå³æ—‹è½¬
 	subR->leftChild = ptr->rightChild;
 	ptr->rightChild = subR;
 
-	//¸üĞÂsubR->bf
+	//æ›´æ–°subR->bf
 	if (ptr->bf >= 0)
 		subR->bf = 0;
 	else
 		subR->bf = 1;
 
-	//ºó×óĞı×ª
+	//åå·¦æ—‹è½¬
 	subL->rightChild = ptr->leftChild;
 	ptr->leftChild = subL;
 
-	//¸üĞÂsubL->bf
+	//æ›´æ–°subL->bf
 	if (ptr->bf == 1)
 		subL->bf = -1;
 	else
@@ -134,19 +136,19 @@ void AVLTree<Type>::Rotate_RL(AVLNode<Type>*& ptr)
 template<class Type>
 bool AVLTree<Type>::Insert(AVLNode<Type>*& t, const Type& x)
 {
-	// 1.°´ÕÕBSTµÄ¹æÔò²åÈë½Úµã
-	AVLNode<Type>* pr = nullptr; //Òª²åÈë½ÚµãµÄ¸¸½Úµã
-	AVLNode<Type>* p = t;  //²åÈëµÚÒ»¸öÊı¾İÊ±tÖ¸Ïò¿Õ
+	// 1.æŒ‰ç…§BSTçš„è§„åˆ™æ’å…¥èŠ‚ç‚¹
+	AVLNode<Type>* pr = nullptr; //è¦æ’å…¥èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹
+	AVLNode<Type>* p = t;  //æ’å…¥ç¬¬ä¸€ä¸ªæ•°æ®æ—¶tæŒ‡å‘ç©º
 
 	stack<AVLNode<Type>*> st;
 
-	while (p != nullptr) //ÓÃÓÚ²éÕÒxµÄ²åÈëÎ»ÖÃ
+	while (p != nullptr) //ç”¨äºæŸ¥æ‰¾xçš„æ’å…¥ä½ç½®
 	{
-		if (x == p->data) //²»²åÈëÖØ¸´Êı¾İ
+		if (x == p->data) //ä¸æ’å…¥é‡å¤æ•°æ®
 			return false;
 
-		pr = p; //×·×ÙÒª²åÈë½ÚµãµÄ¸¸½Úµã
-		st.push(pr);  //±£Áô¾­¹ıµÄ½Úµã
+		pr = p; //è¿½è¸ªè¦æ’å…¥èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹
+		st.push(pr);  //ä¿ç•™ç»è¿‡çš„èŠ‚ç‚¹
 
 		if (x < p->data)
 			p = p->leftChild;
@@ -160,54 +162,54 @@ bool AVLTree<Type>::Insert(AVLNode<Type>*& t, const Type& x)
 		return true;
 	}
 
-	//Á´½ÓĞÂ½¨½Úµã
+	//é“¾æ¥æ–°å»ºèŠ‚ç‚¹
 	if (x < pr->data)
 		pr->leftChild = p;
 	else
 		pr->rightChild = p;
 
-	// 2.Èç¹û·¢Éú²»Æ½ºâ£¬ĞèÒªµ÷ÕûÆ½ºâ
+	// 2.å¦‚æœå‘ç”Ÿä¸å¹³è¡¡ï¼Œéœ€è¦è°ƒæ•´å¹³è¡¡
 	while (!st.empty())
 	{
 		pr = st.top();
 		st.pop();
 
 		if (p == pr->leftChild) 
-			pr->bf--;  //Èç¹ûÔÚprµÄ×óÊ÷²åÈë£¬prµÄbf¼õ1£¨bf=r_h - l_h£©;
+			pr->bf--;  //å¦‚æœåœ¨prçš„å·¦æ ‘æ’å…¥ï¼Œprçš„bfå‡1ï¼ˆbf=r_h - l_hï¼‰;
 		else
 			pr->bf++;
 
 		if (pr->bf == 0)
-			break;  //Èç¹û²åÈë½Úµãºópr->bf==0,Ê÷ÒÀ¾ÉÆ½ºâ£¬²»ĞèÒªÔÙ»ØËİÉÏÈ¥µ÷Õûbf
+			break;  //å¦‚æœæ’å…¥èŠ‚ç‚¹åpr->bf==0,æ ‘ä¾æ—§å¹³è¡¡ï¼Œä¸éœ€è¦å†å›æº¯ä¸Šå»è°ƒæ•´bf
 		if (pr->bf == 1 || pr->bf == -1) //|bf|=1
-			p = pr;	//ÏòÉÏ»ØËİ
+			p = pr;	//å‘ä¸Šå›æº¯
 		else
 		{
-			// pr->|bf| == 2 ·¢Éú²»Æ½ºâ£¬ĞèÒªµ÷ÕûÆ½ºâ
-			if (p == pr->leftChild) //×ó·ÖÖ§
+			// pr->|bf| == 2 å‘ç”Ÿä¸å¹³è¡¡ï¼Œéœ€è¦è°ƒæ•´å¹³è¡¡
+			if (p == pr->leftChild) //å·¦åˆ†æ”¯
 			{
-				if (p->bf < 0)   /*   / -->  ÓÒµ¥Ğı    */
+				if (p->bf < 0)   /*   / -->  å³å•æ—‹    */
 					Rotate_R(pr);
-				else			 /*   < -->  ÏÈ×óºóÓÒ  */
+				else			 /*   < -->  å…ˆå·¦åå³  */
 					Rotate_LR(pr);
 			}
-			else   //ÓÒ·ÖÖ§
+			else   //å³åˆ†æ”¯
 			{  
-				if (p->bf > 0)   /*   \ -->  ×óµ¥Ğı    */
+				if (p->bf > 0)   /*   \ -->  å·¦å•æ—‹    */
 					Rotate_L(pr);
-				else			 /*   > -->  ÏÈÓÒºó×ó  */
+				else			 /*   > -->  å…ˆå³åå·¦  */
 					Rotate_RL(pr);
 			}
 			break;
 		}
 	}
 
-	//ÖØĞÂÁ¬½Ó
+	//é‡æ–°è¿æ¥
 	if (st.empty())
 		t = pr;
 	else
 	{
-		AVLNode<Type>* ppr = st.top();  //¸¸½ÚµãµÄ¸¸½Úµã
+		AVLNode<Type>* ppr = st.top();  //çˆ¶èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹
 		if (ppr->data > pr->data)
 			ppr->leftChild = pr;
 		else
